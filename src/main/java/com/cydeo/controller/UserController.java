@@ -24,7 +24,8 @@ public class UserController {
 
     @GetMapping("/create")
     public String createUser(Model model){
-
+        //Passing data to my view
+        //If I want to pass the business logic I need to bring everything from the service
         model.addAttribute("user", new UserDTO());
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("users", userService.findAll());

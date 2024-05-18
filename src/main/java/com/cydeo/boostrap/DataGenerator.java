@@ -1,5 +1,5 @@
 package com.cydeo.boostrap;
-
+//Data are here
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.RoleDTO;
 import com.cydeo.dto.TaskDTO;
