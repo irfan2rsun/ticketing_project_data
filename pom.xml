@@ -21,6 +21,7 @@
         			<groupId>org.springframework.boot</groupId>
         			<artifactId>spring-boot-starter-data-jpa</artifactId>
         		</dependency>
+<!--        This is needed because I am going to use hibernate jpa and repository and this dependency is giving me everything -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -44,6 +45,7 @@
         			<artifactId>postgresql</artifactId>
         			<scope>runtime</scope>
         		</dependency>
+<!--  I need this driver because I need to give the implementation for the JDBC which is coming from JDK-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
