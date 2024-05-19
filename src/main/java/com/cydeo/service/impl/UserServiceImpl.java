@@ -47,4 +47,11 @@ public class UserServiceImpl implements UserService {
     public void deleteByUserName(String username) {
 
     }
+
+    @Override
+    public UserDTO update(UserDTO user) {
+
+        userRepository.save(userMapper.convertToEntity(user));
+        return findByUserName(user.getUserName());
+    }
 }
