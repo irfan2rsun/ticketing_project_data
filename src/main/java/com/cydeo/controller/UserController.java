@@ -1,6 +1,8 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.UserDTO;
+import com.cydeo.service.RoleService;
+import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,26 +13,26 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+//Inorder to use the method I built in the method from different class I need to inject them
+    private final RoleService roleService;
+    private final UserService userService;
 
-//    private final RoleService roleService;
-//    private final UserService userService;
-//
-//    public UserController(RoleService roleService, UserService userService) {
-//        this.roleService = roleService;
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping("/create")
-//    public String createUser(Model model){
-//        //Passing data to my view
-//        //If I want to pass the business logic I need to bring everything from the service
-//        model.addAttribute("user", new UserDTO());
-//        model.addAttribute("roles", roleService.findAll());
-//        model.addAttribute("users", userService.findAll());
-//
-//        return "/user/create";
-//
-//    }
+    public UserController(RoleService roleService, UserService userService) {
+        this.roleService = roleService;
+        this.userService = userService;
+    }
+
+    @GetMapping("/create")
+    public String createUser(Model model){
+        //Passing data to my view
+        //If I want to pass the business logic I need to bring everything from the service
+        model.addAttribute("user", new UserDTO());
+        model.addAttribute("roles", roleService.listAllRoles());
+        model.addAttribute("users", userService.listAllUsers());
+
+        return "/user/create";
+
+    }
 //
 //    @PostMapping("/create")
 //    public String insertUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
