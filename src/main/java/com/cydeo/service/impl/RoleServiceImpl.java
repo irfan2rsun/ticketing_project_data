@@ -35,7 +35,7 @@ public class RoleServiceImpl implements RoleService {
         //I need to convert those Role entities to DTOs
         //I need to use ModelMapper
         //I already created a class called RoleMapper and there are two methods for me to make this conversion happen
-        //I inject it, so I can use the method to convert a bunch of roles thorough stream
+        //I inject it, so I can use the method to convert a bunch of roles entities to DTO to show on the UI thorough stream
 
         return roleList.stream()
                 .map(roleMapper::convertToDto)
