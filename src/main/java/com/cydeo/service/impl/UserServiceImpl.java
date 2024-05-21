@@ -40,11 +40,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO user) {
+
         userRepository.save(userMapper.convertToEntity(user));//saving only one obj that's why I don't need to use stream here
     }
 
     @Override
     public void deleteByUserName(String username) {
+
         userRepository.deleteByUserName(username);
     }
 
@@ -57,9 +59,21 @@ public class UserServiceImpl implements UserService {
         User convertedUser = userMapper.convertToEntity(user);//Save it in the DB and this obj doesn't have id
         //Set id to the converted obj
         convertedUser.setId(user1.getId());
-        //save the updated user in the DB
+        //Save the updated user in the DB
         userRepository.save(convertedUser);
 
         return findByUserName(user.getUserName());
+    }
+
+    @Override
+    public void delete(String username) {
+
+        //Go to DB and get the user with username
+        User user = userRepository.findByUserName(username);
+        //Change the isDeleted field to true
+        user.setIsDeleted(true);
+        //Save the obj in DB
+        userRepository.save(user);
+
     }
 }
