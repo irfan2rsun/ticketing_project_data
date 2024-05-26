@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/project")
 public class ProjectController {
@@ -78,8 +80,8 @@ public class ProjectController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("managers", userService.findManagers());
-            model.addAttribute("projects", projectService.findAll());
+            model.addAttribute("managers", userService.listAllByRole("manager"));
+            model.addAttribute("projects", projectService.listAllProjects());
 
             return "/project/update";
 
