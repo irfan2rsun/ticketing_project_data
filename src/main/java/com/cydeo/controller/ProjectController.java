@@ -55,12 +55,12 @@ public class ProjectController {
         projectService.delete(projectCode);
         return "redirect:/project/create";
     }
-//
-//    @GetMapping("/complete/{projectCode}")
-//    public String completeProject(@PathVariable("projectCode") String projectCode) {
-//        projectService.complete(projectService.findById(projectCode));
-//        return "redirect:/project/create";
-//    }
+
+    @GetMapping("/complete/{projectCode}")
+    public String completeProject(@PathVariable("projectCode") String projectCode) {
+        projectService.complete(projectCode);
+        return "redirect:/project/create";
+    }
 //
 //    @GetMapping("/update/{projectCode}")
 //    public String editProject(@PathVariable("projectCode") String projectCode, Model model){
