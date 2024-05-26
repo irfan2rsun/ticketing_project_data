@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class UserDTO {
 
-    private Long id;
+    private Long id;//Telling the mapper when mapping, map the id field of userDTO as well, when two classes need to be joined, we need this field
 
     public Long getId() {
         return id;
