@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProjectDTO {
 
+    private Long id;//this id can now map to entity error is gone when saving the task
+
     @NotBlank
     private String projectName;
 
