@@ -1,12 +1,15 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
+import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
+import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userService, UserMapper userMapper) {
+
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -61,8 +69,6 @@ public class ProjectServiceImpl implements ProjectService {
         convertedProject.setProjectStatus(project.getProjectStatus());
 
         projectRepository.save(convertedProject);
-
-
     }
 
     @Override
@@ -71,7 +77,6 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
         projectRepository.save(project);
-
     }
 
     @Override
@@ -80,5 +85,19 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+    }
+
+    @Override
+    public List<ProjectDTO> listAllProjectDetails() {
+        //UI                          //login
+        UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
+        //For DB I need to pass entity
+        User user = userMapper.convertToEntity(currentUserDTO);
+        //I will go to DB give me all the project assigned to this manager, I don't have the method, so I need create it in the Repository
+        List<Project> list = projectRepository.
+
+
+        //hey DB, give me all projects assigned to manager login in the system
+        return null;
     }
 }
