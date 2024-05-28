@@ -9,6 +9,7 @@ import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,15 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final TaskService taskService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userService, UserMapper userMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userService, UserMapper userMapper, TaskService taskService) {
 
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.userService = userService;
         this.userMapper = userMapper;
+        this.taskService = taskService;
     }
 
     @Override
@@ -91,13 +94,22 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> listAllProjectDetails() {
         //UI                          //login
         UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
-        //For DB I need to pass entity
+        //For DB, I need to pass entity
         User user = userMapper.convertToEntity(currentUserDTO);
         //I will go to DB give me all the project assigned to this manager, I don't have the method, so I need create it in the Repository
-        List<Project> list = projectRepository.
-
+        List<Project> list = projectRepository.findAllByAssignedManager(user);
 
         //hey DB, give me all projects assigned to manager login in the system
-        return null;
+        return list.stream().map(project -> {
+
+                    ProjectDTO obj = projectMapper.convertToDto(project);
+
+                    obj.setUnfinishedTaskCounts(taskService.totalNonCompletedTask(project.getProjectCode()));
+                    obj.setCompleteTaskCounts(taskService.totalCompletedTask(project.getProjectCode()));
+
+                    return obj;
+                }
+
+        ).collect(Collectors.toList());
     }
 }
