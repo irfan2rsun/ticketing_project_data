@@ -1,12 +1,13 @@
 package com.cydeo.service;
 
+import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
 
 import java.util.List;
 
 public interface TaskService {
 
-    //Adding business logic for save,update,delete,show all task, give me certain task
+    //Adding business logic for save,update,delete,show all task, give me certain task...
     List<TaskDTO> listAllTask();
 
     void save(TaskDTO task);
@@ -20,5 +21,7 @@ public interface TaskService {
     int totalNonCompletedTask(String projectCode);
 
     int totalCompletedTask(String projectCode);
+
+    void deleteByProject(ProjectDTO projectDTO);
 
 }
