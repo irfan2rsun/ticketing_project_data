@@ -2,6 +2,7 @@ package com.cydeo.service.impl;
 
 import com.cydeo.dto.RoleDTO;
 import com.cydeo.entity.Role;
+import com.cydeo.mapper.MapperUtil;
 import com.cydeo.mapper.RoleMapper;
 import com.cydeo.repository.RoleRepository;
 import com.cydeo.service.RoleService;
@@ -15,10 +16,12 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
+    private final MapperUtil mapperUtil;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper, MapperUtil mapperUtil) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
@@ -37,10 +40,16 @@ public class RoleServiceImpl implements RoleService {
         //I already created a class called RoleMapper and there are two methods for me to make this conversion happen
         //I inject it, so I can use the method to convert a bunch of roles entities to DTO to show on the UI thorough stream
 
-        return roleList.stream()
-                .map(roleMapper::convertToDto)
-                .collect(Collectors.toList());//if I am calling a method directly from a class I can use "::"
+//        return roleList.stream()
+//                .map(roleMapper::convertToDto)
+//                .collect(Collectors.toList());//if I am calling a method directly from a class I can use "::"
 
+        return roleList.stream()
+                .map(role -> mapperUtil.convert(role, new RoleDTO())).collect(Collectors.toList());
+                                             //covert role to RoleDTO
+
+//        return roleList.stream()
+//                .map(role -> mapperUtil.convert(role, RoleDTO.class)).collect(Collectors.toList());
 
 
 

@@ -20,12 +20,17 @@ public class User extends BaseEntity {
 
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String userName;
+
     private String passWord;
     private boolean enabled;
     private String phone;
+
     @ManyToOne
     private Role role;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
