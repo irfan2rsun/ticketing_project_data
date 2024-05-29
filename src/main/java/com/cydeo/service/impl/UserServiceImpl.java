@@ -10,7 +10,6 @@ import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllUsers() {
 
-        List<User> userList = userRepository.findAll(Sort.by("firstName"));
+        List<User> userList = userRepository.findAllByIsDeletedOrderByFirstNameDesc(false);//Is deleted user to be false if returning all users
         return userList.stream().
                 map(userMapper::convertToDto)
                 .collect(Collectors.toList());
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByUserName(String username) {
 
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUserNameAndIsDeleted(username, false);
         return userMapper.convertToDto(user);
     }
 
@@ -53,17 +52,17 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userMapper.convertToEntity(user));//saving only one obj that's why I don't need to use stream here
     }
 
-    @Override
-    public void deleteByUserName(String username) {
-
-        userRepository.deleteByUserName(username);
-    }
+//    @Override
+//    public void deleteByUserName(String username) {
+//
+//        userRepository.deleteByUserName(username);
+//    }
 
     @Override
     public UserDTO update(UserDTO user) {
 
         //Find current user
-        User user1 = userRepository.findByUserName(user.getUserName()); //Has id
+        User user1 = userRepository.findByUserNameAndIsDeleted(user.getUserName(), false); //Has id
         //Map update user dto to entity obj
         User convertedUser = userMapper.convertToEntity(user);//Save it in the DB and this obj doesn't have id
         //Set id to the converted obj
@@ -78,11 +77,13 @@ public class UserServiceImpl implements UserService {
     public void delete(String username) {
 
         //Go to DB and get the user with username
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUserNameAndIsDeleted(username, false);
 
         if (checkIfUserCanBeDeleted(user)){
             //Change the isDeleted field to true
             user.setIsDeleted(true);
+            //Add id number at the end of the userName to make sure it's unique
+            user.setUserName(user.getUserName() + "-" + user.getId()); // harold@manager.com-2
             //Save the obj in DB
             userRepository.save(user);
         }
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllByRole(String role) {
 
-        List<User> users = userRepository.findByRoleDescriptionIgnoreCase(role);//I don't have that business => go to db and bring me the users with certain roles, therefor I need to build it in the repo
+        List<User> users = userRepository.findByRoleDescriptionIgnoreCaseAndIsDeleted(role, false);//I don't have that business => go to db and bring me the users with certain roles, therefor I need to build it in the repo
 
         return users.stream()
                 .map(userMapper::convertToDto)

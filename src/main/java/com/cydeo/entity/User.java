@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@Where(clause = "is_deleted=false")//Any repo which is using User entity whatever query inside will include this clause
+//@Where(clause = "is_deleted=false")                //SELECT * FROM users WHERE id=4 AND is_deleted = false;
 public class User extends BaseEntity {
 
     private String firstName;
